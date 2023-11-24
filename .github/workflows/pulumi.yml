@@ -1,0 +1,66 @@
+name: Pulumi
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/*'
+
+# These are the environment variables that jobs in the workflow have access to.
+# By defining them here, all jobs/steps will have access to these variables.
+env:
+  GOOGLE_CREDENTIALS: '${{ secrets.GOOGLE_CREDENTIALS }}'
+  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+  PULUMI_STACK_NAME: explorerstheatrecollective/pretix-infra/prod
+  PULUMI_WORKING_DIRECTORY: .
+
+jobs:
+  pulumi:
+    name: Pulumi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Turnstyle
+        if: ${{ github.event_name == 'push' }}
+        uses: softprops/turnstyle@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v2
+      
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1.2.0
+        with:
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+          export_environment_variables: true
+          create_credentials_file: true
+          cleanup_credentials: true
+          
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - run: pip install -r requirements.txt
+        working-directory: ${{ env.PULUMI_WORKING_DIRECTORY }}
+
+      - name: PR previews
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: pulumi/actions@v3
+        with:
+          command: preview
+          stack-name: ${{ env.PULUMI_STACK_NAME }}
+          work-dir: ${{ env.PULUMI_WORKING_DIRECTORY }}
+
+      - name: Apply infrastructure update
+        if: ${{ github.event_name == 'push' }}
+        uses: pulumi/actions@v3
+        with:
+          command: up
+          stack-name: ${{ env.PULUMI_STACK_NAME }}
+          work-dir: ${{ env.PULUMI_WORKING_DIRECTORY }}
