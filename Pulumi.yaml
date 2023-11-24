@@ -1,0 +1,6 @@
+name: pretix-infra
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Pretix Ticket Sales
