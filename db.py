@@ -1,12 +1,15 @@
 import pulumi
 from pulumi_github import ActionsSecret, ActionsVariable
-from pulumi_gcp import secretmanager, sql
+from pulumi_gcp import secretmanager, sql, compute, servicenetworking
 from pulumi_random import RandomPassword
 
 # Setup Vars
 config = pulumi.Config()
 gcp_config = pulumi.Config('gcp')
 region = gcp_config.require('region')
+
+# Setup Network
+network = compute.get_network(name='production-vpc', project='common-405623')
 
 # Setup Labels
 labels = {
@@ -50,7 +53,8 @@ instance = sql.DatabaseInstance(
         tier='db-f1-micro',
         user_labels=labels,
         ip_configuration=sql.DatabaseInstanceSettingsIpConfigurationArgs(
-            ipv4_enabled=True,
+            ipv4_enabled=False,
+            private_network=network.id,
         ),
     ),
 )

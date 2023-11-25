@@ -15,6 +15,13 @@ subnet = compute.get_subnetwork(
     project='common-405623',
 )
 
+# Setup IP Reservation
+public_ip = compute.Address(
+    'vm-public-ip',
+    name='pretix',
+    network_tier='STANDARD',
+    opts=pulumi.ResourceOptions(protect=True),
+)
 # Setup VM
 instance = compute.Instance(
     'vm-instance',
@@ -28,6 +35,13 @@ instance = compute.Instance(
         ),
     ),
     network_interfaces=[
-        compute.InstanceNetworkInterfaceArgs(subnetwork=subnet.self_link)
+        compute.InstanceNetworkInterfaceArgs(
+            subnetwork=subnet.self_link,
+            access_configs=[
+                compute.InstanceNetworkInterfaceAccessConfigArgs(
+                    nat_ip=public_ip.address,
+                )
+            ],
+        )
     ],
 )
