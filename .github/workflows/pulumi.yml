@@ -4,17 +4,15 @@ on:
     branches:
       - main
     paths:
-      - '**/*'
+      - "**/*"
   pull_request:
     branches:
       - main
     paths:
-      - '**/*'
+      - "**/*"
 
-# These are the environment variables that jobs in the workflow have access to.
-# By defining them here, all jobs/steps will have access to these variables.
 env:
-  GOOGLE_CREDENTIALS: '${{ secrets.GOOGLE_CREDENTIALS }}'
+  GOOGLE_CREDENTIALS: "${{ secrets.GOOGLE_CREDENTIALS }}"
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
   PULUMI_STACK_NAME: explorerstheatrecollective/pretix-infra/prod
   PULUMI_WORKING_DIRECTORY: .
@@ -31,20 +29,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v2
-      
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1.2.0
         with:
-          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
           export_environment_variables: true
           create_credentials_file: true
           cleanup_credentials: true
-          
 
       - name: Install Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.11
+          cache: pip
 
       - run: pip install -r requirements.txt
         working-directory: ${{ env.PULUMI_WORKING_DIRECTORY }}
@@ -55,6 +53,8 @@ jobs:
         with:
           command: preview
           stack-name: ${{ env.PULUMI_STACK_NAME }}
+          comment-on-pr: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           work-dir: ${{ env.PULUMI_WORKING_DIRECTORY }}
 
       - name: Apply infrastructure update
