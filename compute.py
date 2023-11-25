@@ -1,10 +1,13 @@
 import pulumi
-from pulumi_gcp import compute
+from pulumi_gcp import compute, oslogin
+
+from iam import ansible_sa
 
 # Setup Vars
 config = pulumi.Config('compute')
 disk_size = config.get('disk_size') or 20
 machine_type = config.get('machine_type') or 'e2-small'
+ssh_key = config.get('ssh-key')
 
 # Get Subnet
 subnet = compute.get_subnetwork(

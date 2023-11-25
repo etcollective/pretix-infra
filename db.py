@@ -1,5 +1,5 @@
 import pulumi
-from pulumi_gcp import sql, secretmanager
+from pulumi_gcp import secretmanager, sql
 from pulumi_random import RandomPassword
 
 # Setup Vars
