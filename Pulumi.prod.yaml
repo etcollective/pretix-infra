@@ -4,3 +4,7 @@ config:
   gcp:project: pretix-prod
   gcp:region: us-west1
   gcp:zone: us-west1-c
+  github:owner: etcollective
+  github:token:
+    secure: AAABAL0Gxy47e+3S8Tx7TM/0A1Koi62R52rKJVhy2UnB0oBFWEXPoNSpDE2inLlU6l2DwJAIfHYDSPOQoeWIjlVHCPzOJ/AxadtW/x6wRMv2ZT7iFEnlupF5o6gNtRC1z9SA2V/2VTTghXrlleRgz50A1HMrsxhWLhZ5N4c=
+  pretix-infra:ansible-repo: ansible

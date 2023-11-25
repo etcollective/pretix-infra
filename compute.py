@@ -23,7 +23,7 @@ instance = compute.Instance(
     boot_disk=compute.InstanceBootDiskArgs(
         initialize_params=compute.InstanceBootDiskInitializeParamsArgs(
             size=disk_size,
-            image='rocky-linux-9-optimized-gcp',
+            image='debian-12',
             type='pd-balanced',
         ),
     ),

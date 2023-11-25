@@ -1,8 +1,10 @@
 import pulumi
+from pulumi_github import ActionsSecret, ActionsVariable
 from pulumi_gcp import secretmanager, sql
 from pulumi_random import RandomPassword
 
 # Setup Vars
+config = pulumi.Config()
 gcp_config = pulumi.Config('gcp')
 region = gcp_config.require('region')
 
@@ -70,7 +72,41 @@ user = sql.User(
     opts=pulumi.ResourceOptions(parent=database),
 )
 
-# Export the connection string for the database
+# Export values to Github Actions
+repo = config.require('ansible-repo')
+
+db_name = ActionsVariable(
+    'db-name-gh-var',
+    repository=repo,
+    variable_name='PRETIX_DB_NAME',
+    value=database.name,
+    opts=pulumi.ResourceOptions(parent=database),
+)
+
+db_user = ActionsVariable(
+    'db-user-gh-var',
+    repository=repo,
+    variable_name='PRETIX_DB_USER',
+    value=user.name,
+    opts=pulumi.ResourceOptions(parent=user),
+)
+
+db_password = ActionsSecret(
+    'db-password-gh-secret',
+    repository=repo,
+    secret_name='PRETIX_DB_PASSWORD',
+    plaintext_value=password.result,
+    opts=pulumi.ResourceOptions(parent=password),
+)
+db_host = ActionsVariable(
+    'db-host-gh-var',
+    repository=repo,
+    variable_name='PRETIX_DB_HOST',
+    value=instance.public_ip_address,
+    opts=pulumi.ResourceOptions(parent=instance),
+)
+
+# Setup Outputs
 pulumi.export('db_connection_name', instance.connection_name)
 pulumi.export('db_username', user.name)
 pulumi.export('db_password', password.result)
