@@ -53,7 +53,7 @@ hostname = config.require('hostname')
 zone = get_zone(name=dns)
 dns_record = Record(
     'pretix-web-dns-record',
-    zone_id=dns,
+    zone_id=zone.id,
     name=hostname,
     type='A',
     ttl=1,
