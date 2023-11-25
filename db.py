@@ -56,7 +56,15 @@ instance = sql.DatabaseInstance(
             ipv4_enabled=False,
             private_network=network.id,
         ),
+        insights_config=sql.DatabaseInstanceSettingsInsightsConfigArgs(
+            query_insights_enabled=True,
+            query_plans_per_minute=5,
+            query_string_length=1024,
+            record_application_tags=True,
+            record_client_address=True,
+        ),
     ),
+    deletion_protection=False,
 )
 
 # Setup Database
@@ -106,7 +114,7 @@ db_host = ActionsVariable(
     'db-host-gh-var',
     repository=repo,
     variable_name='PRETIX_DB_HOST',
-    value=instance.public_ip_address,
+    value=instance.private_ip_address,
     opts=pulumi.ResourceOptions(parent=instance),
 )
 

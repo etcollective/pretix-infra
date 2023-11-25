@@ -16,6 +16,7 @@ env:
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
   PULUMI_STACK_NAME: explorerstheatrecollective/pretix-infra/prod
   PULUMI_WORKING_DIRECTORY: .
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
 jobs:
   pulumi:
@@ -44,7 +45,7 @@ jobs:
           python-version: 3.11
           cache: pip
 
-      - run: pip install -r requirements.txt
+      - run: pip install --upgrade  -r requirements.txt
         working-directory: ${{ env.PULUMI_WORKING_DIRECTORY }}
 
       - name: PR previews
