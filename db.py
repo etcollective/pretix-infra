@@ -1,6 +1,6 @@
 import pulumi
+from pulumi_gcp import compute, secretmanager, sql
 from pulumi_github import ActionsSecret, ActionsVariable
-from pulumi_gcp import secretmanager, sql, compute, servicenetworking
 from pulumi_random import RandomPassword
 
 # Setup Vars
