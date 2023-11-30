@@ -1,17 +1,16 @@
 <div align="center">
 <h1 align="center">
-<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" width="100" />
-<br>PRETIX-INFRA</h1>
-<h3>◦ Craft & Code, Unleashed: pretix-infra, Infrastructure Simplified!</h3>
-<h3>◦ Developed with the software and tools below.</h3>
+<img src="https://static.pretix.space/static/pretixeu/img/logo_dark.e848be43c07e.svg" width="100" />
+<br>Pretix Infrastructure</h1>
+<h3>Google Cloud Platform IaC using Pulumi</h3>
 
 <p align="center">
-<img src="https://img.shields.io/badge/YAML-CB171E.svg?style=flat-square&logo=YAML&logoColor=white" alt="YAML" />
+
 <img src="https://img.shields.io/badge/Pulumi-8A3391.svg?style=flat-square&logo=Pulumi&logoColor=white" alt="Pulumi" />
 <img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat-square&logo=Python&logoColor=white" alt="Python" />
 <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=flat-square&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions" />
 </p>
-<img src="https://img.shields.io/github/license/etcollective/pretix-infra?style=flat-square&color=5D6D7E" alt="GitHub license" />
+
 <img src="https://img.shields.io/github/last-commit/etcollective/pretix-infra?style=flat-square&color=5D6D7E" alt="git-last-commit" />
 <img src="https://img.shields.io/github/commit-activity/m/etcollective/pretix-infra?style=flat-square&color=5D6D7E" alt="GitHub commit activity" />
 <img src="https://img.shields.io/github/languages/top/etcollective/pretix-infra?style=flat-square&color=5D6D7E" alt="GitHub top language" />
