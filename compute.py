@@ -1,8 +1,5 @@
 import pulumi
-from pulumi_gcp import compute, oslogin
-from pulumi_cloudflare import Record, get_zone
-
-from iam import ansible_sa
+from pulumi_gcp import compute
 
 # Setup Vars
 config = pulumi.Config('compute')
@@ -44,20 +41,4 @@ instance = compute.Instance(
             ],
         )
     ],
-)
-
-
-# Create DNS Record
-dns = config.require('zone')
-hostname = config.require('hostname')
-zone = get_zone(name=dns)
-dns_record = Record(
-    'pretix-web-dns-record',
-    zone_id=zone.id,
-    name=hostname,
-    type='A',
-    ttl=1,
-    proxied=True,
-    value=public_ip.address,
-    opts=pulumi.ResourceOptions(parent=public_ip, depends_on=[instance]),
 )
