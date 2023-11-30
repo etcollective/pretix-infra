@@ -1,5 +1,6 @@
 config:
   compute:hostname: pretix
+  compute:machine_type: e2-medium
   compute:ssh-key:
     secure: AAABAIBZLoANM9e3l/kOIhRMT6TYsEuiiq1b1FHM3cW8GdDXRc/XcGQLHGMC1xwnbowUHKv5RmZmmz6aYAgNRvfKgBgJuqLU/N58bECRrDPJxj4eZplz+YHWRNZzkRza9fqGK6I0W6sV3HTj1bA/JA==
   compute:zone: etcollective.org
