@@ -55,6 +55,7 @@ instance = sql.DatabaseInstance(
         ip_configuration=sql.DatabaseInstanceSettingsIpConfigurationArgs(
             ipv4_enabled=False,
             private_network=network.id,
+            require_ssl=True,
         ),
         insights_config=sql.DatabaseInstanceSettingsInsightsConfigArgs(
             query_insights_enabled=True,

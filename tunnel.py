@@ -17,13 +17,7 @@ from db import repo
 dns = config.require('zone')
 zone = get_zone(name=dns)
 hostname = config.require('hostname')
-
-
-# Create DNS Record
-dns = config.require('zone')
-zone = get_zone(name=dns)
-hostname = config.require('hostname')
-
+url = f'{hostname}.{dns}'
 
 # Generate Tunnel Secret
 tunnel_secret = RandomId(
@@ -49,8 +43,18 @@ tunnel_config = TunnelConfig(
     config=TunnelConfigConfigArgs(
         ingress_rules=[
             TunnelConfigConfigIngressRuleArgs(
-                service='http://localhost:80',
-                hostname=hostname,
+                service='http://localhost:8345',
+                hostname=url,
+            ),
+            TunnelConfigConfigIngressRuleArgs(
+                service='http_status:404',
+                path='media/cachedfiles',
+                hostname=url,
+            ),
+            TunnelConfigConfigIngressRuleArgs(
+                service='http_status:404',
+                path='media/invoices',
+                hostname=url,
             ),
             TunnelConfigConfigIngressRuleArgs(
                 service='http_status:404',
@@ -60,21 +64,21 @@ tunnel_config = TunnelConfig(
     opts=pulumi.ResourceOptions(parent=tunnel),
 )
 
-dns_record = Record(
-    'pretix-dns-record',
-    zone_id=zone.id,
-    name=hostname,
-    type='CNAME',
-    proxied=True,
-    value=tunnel.id.apply(lambda id: f'{id}.cfargotunnel.com'),
-    comment='Managed by Pulumi',
-    opts=pulumi.ResourceOptions(
-        parent=tunnel,
-        depends_on=[instance, tunnel_secret, tunnel],
-        delete_before_replace=True,
-        deleted_with=tunnel,
-    ),
-)
+# dns_record = Record(
+#     'pretix-dns-record',
+#     zone_id=zone.id,
+#     name=hostname,
+#     type='CNAME',
+#     proxied=True,
+#     value=tunnel.id.apply(lambda id: f'{id}.cfargotunnel.com'),
+#     comment='Managed by Pulumi',
+#     opts=pulumi.ResourceOptions(
+#         parent=tunnel,
+#         depends_on=[instance, tunnel_secret, tunnel],
+#         delete_before_replace=True,
+#         deleted_with=tunnel,
+#     ),
+# )
 
 tunnel_secret_gh = ActionsSecret(
     'cloudflare-tunnel-gh-secret',
